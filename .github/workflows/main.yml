@@ -1,4 +1,4 @@
-name: Deploy to AWS Lambda
+name: Node.js Build
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Build
-      run: npm run build  # Adjust this based on your project's build script
+      run: npm run build  # Replace with your actual build script/command
 
     - name: Zip Lambda Code
       run: zip -r lambda_function.zip dist  # Adjust 'dist' based on your build output
