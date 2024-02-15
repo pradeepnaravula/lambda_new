@@ -22,7 +22,7 @@ jobs:
       run: npm install
 
     - name: Zip Lambda Code
-      run: zip -r lambda_function.zip dist  # Adjust 'dist' based on your build output
+      run: zip -r lambda_function.zip . -i dist  # Adjust 'dist' based on your build output
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
