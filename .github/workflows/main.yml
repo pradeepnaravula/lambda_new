@@ -32,8 +32,10 @@ jobs:
         aws-region: us-east-2
 
     - name: Upload Zip to S3
-      run: aws s3 cp lambda_function.zip s3://bucketgal/
-
+      run: |
+          zip -j deploy.zip ./*
+          aws s3 deploy.zip s3://bucketgal/
+          
     - name: Deploy Lambda
       run: |
         aws lambda update-function-code \
