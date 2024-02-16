@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
+        uses: sonarsource/sonarcloud-github-action@latest
         with:
           organization: ${{ secrets.SONAR_ORGANIZATION }}
           token: ${{ secrets.SONAR_TOKEN }}
