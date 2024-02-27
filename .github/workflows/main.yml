@@ -3,38 +3,29 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+    - master
 
 jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: '14'
-
+          node-version: '12'
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build  # Adjust this based on your project setup
-
-      - name: Package for Deployment
-        run: zip -r deploy.zip ./*
-
-      - name: Deploy to S3
-        run: aws s3 cp deploy.zip s3://pradeepdev/
-
-      - name: Update Lambda Function
-        run: aws lambda update-function-code --function-name Express --s3-bucket pradeepdev --s3-key deploy.zip
+      - name: npm install
+        env:
+          CI: true
+        run: |
+          npm ci
+      - name: deploy
+        run: |
+          npx ncc build index.ts
+          zip -j deploy.zip ./dist/*
+          aws lambda update-function-code --function-name=Express --zip-file=fileb://deploy.zip
